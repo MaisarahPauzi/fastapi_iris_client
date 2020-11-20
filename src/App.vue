@@ -85,7 +85,7 @@
         "petal_length": this.ex3.val,
         "petal_width": this.ex4.val
       }
-      fetch('http://localhost:8000/predict', {
+      fetch('http://knn-iris-ml.herokuapp.com/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
