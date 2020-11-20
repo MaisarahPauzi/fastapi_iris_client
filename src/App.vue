@@ -5,60 +5,108 @@
       color="primary"
       dark
     >
-    KNN Iris Species Predictor
+    HL Bank Special Survey
     </v-app-bar>
       
     <v-main>
      <v-card
          class="12sx"
          max-width="100%"
-         
        >
-       <div align="center">
-       <v-img src="https://s3.amazonaws.com/assets.datacamp.com/blog_assets/Machine+Learning+R/iris-machinelearning.png" width="50%">
-       </v-img>
-
-       </div>
+       
        
          <v-card-text>
-           <h3>Select values below</h3>
-         </v-card-text>
-        <div class="sliders-div">
-          <v-slider
-            v-model="ex1.val"
-            :label="ex1.label"
-            :thumb-color="ex1.color"
-            thumb-label="always"
-            :max="8"
-            step="0.1"
-          ></v-slider>
-          <v-slider
-            v-model="ex2.val"
-            :label="ex2.label"
-            :thumb-color="ex2.color"
-            thumb-label="always"
-            :max="8"
-            step="0.1"
-          ></v-slider>
-          <v-slider
-            v-model="ex3.val"
-            :label="ex3.label"
-            :thumb-color="ex3.color"
-            thumb-label="always"
-            :max="8"
-            step="0.1"
-          ></v-slider>
-          <v-slider
-            v-model="ex4.val"
-            :label="ex4.label"
-            :thumb-color="ex4.color"
-            thumb-label="always"
-            :max="3"
-            step="0.1"
-          ></v-slider>
+           <h3>Please answer the questions Below</h3>
+           <div class="formfiels">
 
+           </div>
+           
+          <v-text-field
+            v-model="email_address"
+            label="Email Address"
+            placeholder="Please enter you email address"
+          ></v-text-field>
+
+          <v-text-field
+            v-model="age"
+            label="Age"
+            placeholder="What is your current age?"
+          ></v-text-field>
+
+          <p>Gender</p>
+
+          <v-radio-group v-model="gender">
+          <v-radio
+            :label="`Male`"
+            :value="`MALE`"
+          ></v-radio>
+          <v-radio
+            :label="`Female`"
+            :value="`FEMALE`"
+          ></v-radio>
+        </v-radio-group>
+
+          <p>Marital Status</p>
+
+         <v-radio-group v-model="maritalStatus">
+          <v-radio
+            :label="`Single`"
+            :value="`SINGLE`"
+          ></v-radio>
+          <v-radio
+            :label="`Married`"
+            :value="`MARRIED`"
+          ></v-radio>
+        </v-radio-group>
+
+        <v-text-field
+            v-model="nationality"
+            label="Nationality"
+            placeholder="What is your nationality? (e.g MALAYSIA)"
+          ></v-text-field>
+
+          <v-select
+          v-model="ethnic"
+          :items="ethnic_choice"
+          label="Ethnic"
+        ></v-select>
+
+        <v-select
+          v-model="occupation"
+          :items="occupation_group_choice"
+          label="Occupation Sector"
+        ></v-select>
+
+        <p>Did you use Internet Banking?</p>
+        <v-radio-group v-model="IB">
+          <v-radio
+            :label="`Yes`"
+            :value="`Y`"
+          ></v-radio>
+          <v-radio
+            :label="`No`"
+            :value="`N`"
+          ></v-radio>
+        </v-radio-group>
+        <p>Did you use Mobile Banking?</p>
+        <v-radio-group v-model="MB">
+          <v-radio
+            :label="`Yes`"
+            :value="`Y`"
+          ></v-radio>
+          <v-radio
+            :label="`No`"
+            :value="`N`"
+          ></v-radio>
+        </v-radio-group>
+         </v-card-text>
+
+         
+        <div>
+         
         </div>
         <div align="center">
+              By submitting this form, you agree to our Terms &amp; Condition <br><br>
               <v-btn color="primary" @click="btnclick">SUBMIT</v-btn>
           
         </div>
@@ -71,19 +119,48 @@
   export default {
     data () {
       return {
-        ex1: { label: 'Sepal Length', val: 0, color: 'red' },
-        ex2: { label: 'Sepal Width', val: 0, color: 'red' },
-        ex3: { label: 'Petal Length', val: 0, color: 'red' },
-        ex4: { label: 'Petal Width', val: 0, color: 'red' },
+        email_address: '',
+        ethnic:'',
+        occupation:'',
+        nationality:'MALAYSIA',
+        age:0,
+        IB:'Y',
+        MB:'Y',
+        gender: 'MALE',
+        customer_type: 'MASS',
+        maritalStatus: 'SINGLE',
+        ethnic_choice: [
+          'MALAY','CHINESE','INDIAN','OTHERS','FOREIGNER WITH PR STATUS','EURASIAN', 'No Description'
+        ],
+        occupation_group_choice : [
+          'PROFESSIONALS',
+          'LEGISLATORS', 
+          'SENIOR OFFICIALS AND MANAGERS',
+          'NON-EMPLOYED / NON-GAINFULLY EMPLOYED',
+          'CLERICAL', 
+          'SECRETARIAL AND ADMINISTRATIVE RELATED',
+          'SALES WORKERS RELATED',
+          'TECHNICIANS', 
+          'SEMI-SKILLED AND ASSOCIATE PROFESSIONALS',
+          'ENTREPRENEURS AND BUSINESS OWNERS',
+          'RS RELATED',
+          'ATHLETIC, ARTISTIC, CRAFT, CULTURE AND DESIGNER','ELEMENTARY OCCUPATIONS','EXEBB CONVERSION','UNIFORMED AND ARMED FORCES'   
+        ]
       }
     },
     methods:{
     btnclick(){
       let jsonData = {
-        "sepal_length": this.ex1.val,
-        "sepal_width": this.ex2.val,
-        "petal_length": this.ex3.val,
-        "petal_width": this.ex4.val
+          "Email_Address": this.email_address,
+          "Customer_Type": "MASS",
+          "Age":this.age,
+          "Gender":this.gender,
+          "MaritalStatus":this.maritalStatus,
+          "Nationality":this.nationality,
+          "Ethnic": this.ethnic,
+          "Occupation_Group": this.occupation,
+          "IB":this.IB,
+          "MB":this.MB
       }
       fetch('http://localhost:8000/predict', {
         method: 'POST',
@@ -94,14 +171,12 @@
       })
       .then(response => response.json())
       .then(data => {
-        this.$swal.fire('Results',
-                      `Species Predicted: ${data.prediction}  (Probability: ${data.probability})`,
-                      'info');
+        console.log(data)
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-      
+      this.$swal('Thank You!')
       
     }
   }
@@ -109,7 +184,7 @@
 </script>
 
 <style>
-.sliders-div {
-  padding: 10px;
+.formfiels {
+  padding: 20px;
 }
 </style>
